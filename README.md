@@ -20,11 +20,11 @@ data.redis:
 ```
 
 ### Version
-When configuring a Faktory service in your Boxfile, can specify which version of Redis to use. The following version(s) are available:
+When configuring a Faktory service in your Boxfile, can specify which version of Faktory to use. The following version(s) are available:
 
 - 0.7.0
 
-**Note:** Due to version compatibility constraints, Redis versions cannot be changed after the service is created. To use a different version, you'll have to create a new Redis service.
+**Note:** Due to version compatibility constraints, Faktory versions cannot be changed after the service is created. To use a different version, you'll have to create a new Faktory service.
 
 #### version
 ```yaml
