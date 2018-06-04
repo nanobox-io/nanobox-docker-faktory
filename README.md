@@ -1,6 +1,6 @@
 # Faktory [![Build Status Image](https://travis-ci.org/nanobox-io/nanobox-docker-faktory.svg)](https://travis-ci.org/nanobox-io/nanobox-docker-faktory)
 
-This is an Faktory Docker image used to launch a Faktory service on Nanobox. To use this image, add a data component to your `boxfile.yml` with the `nanobox/faktory` image specified:
+This is an [Faktory](http://contribsys.com/faktory/) Docker image used to launch a [Faktory](http://contribsys.com/faktory/) service on Nanobox. To use this image, add a data component to your `boxfile.yml` with the `nanobox/faktory` image specified:
 
 ```yaml
 data.faktory:
