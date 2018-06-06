@@ -2,8 +2,12 @@ FROM contribsys/faktory:0.7.0
 
 # install necessary packages
 RUN apk add --no-cache --virtual .persistent-deps \
+    # process supervisor
     runit \
-    bash
+    # hooks need a bit more functionality than sh
+    bash \
+    # hooks need to process json data
+    jq
 
 # move faktory to a real location on the PATH
 RUN mv /faktory* /usr/local/bin
