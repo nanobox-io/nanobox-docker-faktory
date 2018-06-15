@@ -7,7 +7,10 @@ RUN apk add --no-cache --virtual .persistent-deps \
     # hooks need a bit more functionality than sh
     bash \
     # hooks need to process json data
-    jq
+    jq \
+    # rsync and openssh to be able to migrate data when scaling
+    openssh \
+    rsync
 
 # move faktory to a real location on the PATH
 RUN mv /faktory* /usr/local/bin
