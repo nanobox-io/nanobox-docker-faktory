@@ -7,7 +7,7 @@
 
 @test "Verify faktory installed" {
   # ensure faktory executable exists
-  run docker exec "faktory-test" bash -c "[ -f /usr/local/bin/faktory ]"
+  run docker exec "faktory-test" bash -c "[ -f /data/bin/faktory ]"
 
   [ "$status" -eq 0 ]
 }
