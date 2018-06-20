@@ -1,36 +1,58 @@
-FROM contribsys/faktory:0.7.0
+# -*- mode: Dockerfile; tab-width: 4;indent-tabs-mode: nil;-*-
+# vim: ts=4 sw=4 ft=Dockerfile et: 1
+FROM nanobox/runit
 
-# install necessary packages
-RUN apk add --no-cache --virtual .persistent-deps \
-    # process supervisor
-    runit \
-    # hooks need a bit more functionality than sh
-    bash \
-    # hooks need to process json data
-    jq \
-    # rsync and openssh to be able to migrate data when scaling
-    openssh \
-    rsync
+# Create directories
+RUN mkdir -p /var/log/gonano
 
-# move faktory to a real location on the PATH
-RUN mv /faktory* /usr/local/bin
+# Install arping
+RUN apt-get update -qq && \
+    apt-get install -y iputils-arping cron && \
+    apt-get clean all && \
+    rm -rf /var/lib/apt/lists/*
 
-# setup runit
-RUN mkdir -p /etc/service
+USER gonano
+
+# Install binaries
+RUN rm -rf /data/var/db/pkgin && \
+    /data/bin/pkgin -y up && \
+    /data/bin/pkgin -y in \
+        py27-rdbtools \
+        faktory-0.7.0 && \
+    rm -rf /data/var/db/pkgin/cache
+
+USER root
+
+RUN rm -rf /var/gonano/db/pkgin && \
+    /opt/gonano/bin/pkgin -y up && \
+    /opt/gonano/bin/pkgin -y in \
+        jq \
+        rsync && \
+    rm -rf /var/gonano/db/pkgin/cache
+
+RUN /opt/gonano/bin/gem install remote_syslog_logger
 
 # Install hooks
-# RUN mkdir -p /opt/nanobox/hooks && \
-#     mkdir -p /var/nanobox && \
-#     curl \
-#       -f \
-#       -k \
-#       https://s3.amazonaws.com/tools.nanobox.io/hooks/faktory-stable.tgz \
-#         | tar -xz -C /opt/nanobox/hooks && \
-#     curl \
-#       -f \
-#       -k \
-#       -o /var/nanobox/hooks.md5 \
-#       https://s3.amazonaws.com/tools.nanobox.io/hooks/faktory-stable.md5
+RUN mkdir -p /opt/nanobox/hooks && \
+    mkdir -p /var/nanobox && \
+    curl \
+      -f \
+      -k \
+      https://s3.amazonaws.com/tools.nanobox.io/hooks/faktory-stable.tgz \
+        | tar -xz -C /opt/nanobox/hooks && \
+    curl \
+      -f \
+      -k \
+      -o /var/nanobox/hooks.md5 \
+      https://s3.amazonaws.com/tools.nanobox.io/hooks/faktory-stable.md5
 
-# start runit
-CMD ["runsvdir", "-P", "/etc/service"]
+# Cleanup disk
+RUN rm -rf \
+        /var/lib/apt/lists/* \
+        /tmp/* \
+        /var/tmp/*
+
+WORKDIR /data
+
+# Run runit automatically
+CMD [ "/opt/gonano/bin/nanoinit" ]
