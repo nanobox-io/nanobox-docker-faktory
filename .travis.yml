@@ -2,6 +2,7 @@ sudo: required
 
 env:
   - VERSION=0.7.0
+  - VERSION=0.8.0
 
 services:
   - docker
@@ -30,13 +31,13 @@ after_success:
   - docker push ${REMOTE}${NAMESPACE}/faktory:${VERSION}-beta;
   
   # `beta` tag is always pushed (master or any dev branch)
-  - if [ "$VERSION" == "0.7.0" ]; then
+  - if [ "$VERSION" == "0.8.0" ]; then
       docker tag ${NAMESPACE}/faktory:squashed ${NAMESPACE}/faktory:beta;
       docker push ${REMOTE}${NAMESPACE}/faktory:beta;
     fi
     
   # `latest` tag is only pushed on master && most recent version
-  - if [ "$BRANCH" == "master" ] && [ "$VERSION" == "0.7.0" ]; then
+  - if [ "$BRANCH" == "master" ] && [ "$VERSION" == "0.8.0" ]; then
       docker tag ${NAMESPACE}/faktory:squashed ${NAMESPACE}/faktory;
       docker push ${REMOTE}${NAMESPACE}/faktory;
     fi
