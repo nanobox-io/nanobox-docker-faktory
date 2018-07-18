@@ -17,6 +17,7 @@ USER gonano
 RUN rm -rf /data/var/db/pkgin && \
     /data/bin/pkgin -y up && \
     /data/bin/pkgin -y in \
+        rocksdb \
         faktory-0.7.0 && \
     rm -rf /data/var/db/pkgin/cache
 
