@@ -44,6 +44,8 @@ Vagrant.configure(2) do |config|
     cd /vagrant
     docker build -t nanobox/faktory:0.7.0 --no-cache=true 0.7.0
     docker tag nanobox/faktory:0.7.0 nanobox/faktory:0.7.0
+    docker build -t nanobox/faktory:0.8.0 --no-cache=true 0.8.0
+    docker tag nanobox/faktory:0.8.0 nanobox/faktory:0.8.0
   SCRIPT
 
 end
